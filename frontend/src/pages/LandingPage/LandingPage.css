@@ -1,0 +1,154 @@
+.nav-bar {
+  display: flex;
+  margin-left: 3rem;
+  margin-right: 3rem;
+  justify-content: space-between;
+  padding-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.signIn-create-formBot {
+  right: 3rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.sign-in-button {
+  background-color: transparent;
+  border-radius: 0.5rem;
+  border: 2px solid #7ea6ff;
+  color: #7ea6ff;
+  width: 6rem;
+  height: 2rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.create-formBot-button {
+  background-color: #1a5fff;
+  border-radius: 0.5rem;
+  border: 2px solid #7ea6ff;
+  color: white;
+  box-shadow: 0px 1px 0px 0px #ffffff33 inset;
+  height: 2rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10rem;
+
+  bottom: 0;
+}
+
+.top-banner {
+  display: flex;
+}
+
+.triangle,
+.semicircle {
+  /* height: 20rem; */
+  width: 15rem;
+}
+
+.banner-details {
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  align-items: center;
+  text-align: center;
+}
+
+.line-top {
+  font-size: 70px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #4b83ff 0%, #b794f4 100%);
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.middle-line {
+  /* margin-top: 1rem; */
+  font: 30px;
+  margin-bottom: 2rem;
+  padding: 2rem;
+}
+
+.create-formBot-button {
+}
+
+.create-formBot-button-above-banner {
+  background-color: #1a5fff;
+  border-radius: 0.5rem;
+  border: 2px solid #7ea6ff;
+  color: white;
+  box-shadow: 0px 1px 0px 0px #ffffff33 inset;
+  height: 3rem;
+  width: 15rem;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-landing-page {
+  display: flex;
+
+  justify-content: center;
+}
+
+.orange {
+  width: 20rem;
+  z-index: 99;
+  position: absolute;
+  left: 0;
+}
+
+.blue {
+  width: 20rem;
+  z-index: 99;
+  position: absolute;
+  left: 50rem;
+}
+
+.image-landing-page {
+  width: 65rem;
+  z-index: 100;
+  position: relative;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  gap: 10rem;
+  justify-content: center;
+  margin-left: auto;
+  padding-top: 6rem;
+  margin-bottom: 4rem;
+  margin-right: auto;
+  margin-top: 1rem;
+}
+
+.logo-name {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.product-title,
+.community-title,
+.company-title {
+  font-weight: 600;
+}
+
+.products-info,
+.community-info,
+.company-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

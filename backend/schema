@@ -1,0 +1,121 @@
+/\*
+UserTable
+->userId
+->UserName
+->EmailId
+->password
+->EditAccess:[array of Dashboard] //populate() -> to get object
+->ViewAccess:[array of Dashboard] //populate() -> to get object
+
+Dashboard Table
+->OwnerId(ref UserTable)
+->Title
+->Folders: [array of FolderId] (ref Folder table)
+->Forms:[array of FormId] (ref Form Table)
+->EditAccess:[array of userId]
+->ViewAccess:[array of userId]
+->EditLinkId (for sharing dashboard)
+
+Folder Table
+->OwnerId(ref UserTable)
+->Title
+->Dashborad Id (ref DashBoardTable)
+->Forms:[array of Form Id] (ref Form Table)
+
+Form Table
+->OwnerId(ref UserTable)
+->FolderId (ref Folder Id) 
+->Dashboard Id (ref Dashboard Id)
+->EditLinkId (uuid for edit access to the form)
+->Title
+->Views
+->Elements:[
+{category:
+type:
+value: (placeholder)} ]
+
+Response Table
+->Form Id (ref Form Table)
+->User Id (ref User Id)
+->completed (boolean)
+->submittedAt
+->Response:[{category:
+type:
+value (response of user) :}]
+
+API
+API
+
+GET Routes
+
+Get User details
+baseURL/user/:userId
+Returns all User data
+
+Get Dashboard
+baseURL/dashboard/:dashBoardId
+Gets dashboard details, folders and forms with the mentioned dashboardId
+
+Get Folder
+baseURL/folder/:folderId (access the folderId from array )
+Get forms within the selected folder (folderId)
+
+Get Form
+baseURL/form/:formId
+Get form with the mentioned formId //Increament view count when non owner opens the form
+
+Get Response
+baseURL/response/:responseId
+Get form response with the mentioned responseId
+
+API
+
+POST Routes
+
+baseURL/signup
+{name,username,email,password}
+
+baseURL/signIn
+{email,password}
+
+PUT
+baseURL/user/edit
+{name,username,email,password}
+
+Post Folder
+baseURL/folder/:folderId
+{folder name,dashboardId}
+//check if edit access is given in dashboard
+
+Delete Folder
+baseURL/folder/:folderId
+//check if edit access is given in dashboard
+
+Post Form
+baseURL/form/:formId
+{form name,folderId,dashboardId}
+//check if edit access is given in dashboard
+
+Put Form
+baseURL/form/:formId
+{form name,elements}
+//check ownerId (in form table) is matching userId
+
+Delete Form
+baseURL/form/:formId
+//check if edit access is given in dashboard
+
+POST Response
+baseURL/response/:responseId
+
+PUT Response
+baseURL/response/:responseId (store this is local storage-> responseId)
+{elements}
+
+POST Invite
+baseURL/dashboard/:dashboardId/share
+{email,pemission}
+//check if user is registered
+//user Id of user sharing=== ownerId
+
+\*/
