@@ -67,7 +67,7 @@ const postFolder = async (req, res) => {
     }
 
     const dashboard = await Dashboard.findById(dashboardId);
-    console.log(dashboard.editAccess); // Verify the editAccess field
+    console.log(dashboard.editAccess);
 
     if (!dashboard) {
       console.log("Dashboard not found");
