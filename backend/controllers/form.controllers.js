@@ -4,6 +4,7 @@ const Dashboard = require("../models/dashboard.model");
 const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid"); // Import uuid
 const express = require("express");
+const Folder = require("../models/folder.model");
 const app = express();
 
 const getFormDetails = async (req, res) => {
@@ -42,19 +43,18 @@ const getFormDetails = async (req, res) => {
   }
 };
 
-app.use(verifyToken);
+// app.use(verifyToken);
 
 //all other APIs will be authenticated
 
 const postForm = async (req, res) => {
   try {
     let { dashboardId } = req.params;
-    let { title, elements } = req.body;
+    let { title, elements, folderId } = req.body;
 
     dashboardId = dashboardId.trim();
 
     if (!mongoose.Types.ObjectId.isValid(dashboardId)) {
-      console.log("Invalid dashboardId:", dashboardId);
       return res.status(400).json({
         message: "Invalid dashboard ID",
       });
@@ -62,13 +62,10 @@ const postForm = async (req, res) => {
 
     const dashboard = await Dashboard.findById(dashboardId);
     if (!dashboard) {
-      console.log("Dashboard not found");
-      return res.status(500).json({ message: "Dashboard not found" });
+      return res.status(400).json({ message: "Dashboard not found" });
     }
 
     const editLinkId = uuidv4();
-
-    console.log("Dashboard found, proceeding to create form");
 
     const formPost = new Form({
       title,
@@ -76,19 +73,37 @@ const postForm = async (req, res) => {
       dashboardId: dashboard._id,
       ownerId: dashboard.ownerId,
       editLinkId,
+      folderId: folderId || undefined,
     });
 
     await formPost.save();
 
-    res.status(200).json({
+    if (folderId) {
+      console.log("Received folderId:", folderId);
+      const folder = await Folder.findById(folderId);
+
+      if (!folder) {
+        console.log("Folder not found with ID:", folderId);
+        return res.status(400).json({ message: "Folder not found" });
+      }
+
+      folder.forms.push(formPost._id);
+      await folder.save();
+    } else {
+      dashboard.forms.push(formPost._id);
+      await dashboard.save();
+    }
+
+    return res.status(200).json({
       message: "Form created successfully",
       formId: formPost._id,
       title: formPost.title,
-      editLinkId: formPost.editLinkId,
     });
   } catch (error) {
     console.log("Error in creating form:", error);
-    return res.status(500).json({ message: "Error in creating form" });
+    return res.status(400).json({
+      message: "Error in creating form",
+    });
   }
 };
 
@@ -99,19 +114,16 @@ const deleteForm = async (req, res) => {
 
     formId = formId.trim();
 
-    if (!mongoose.Types.ObjectId.isValid(formId)) {
-      return res.status(400).json({
-        message: "Invalid folder ID",
-      });
-    }
-
     const form = await Form.findById(formId);
-
     if (!form) {
-      res.status(400).json({ message: "Form not found" });
+      return res.status(400).json({ message: "Form not found" });
     }
 
     const currentDashboard = await Dashboard.findById(form.dashboardId);
+
+    if (!currentDashboard) {
+      return res.status(400).json({ message: "Dashboard not found" });
+    }
 
     const hasEditAccess = currentDashboard.editAccess.includes(requestUserId);
 
@@ -119,10 +131,11 @@ const deleteForm = async (req, res) => {
       return res.status(400).json({ message: "Access denied" });
     }
 
-    await Form.findOneAndDelete(formId);
+    await Form.findByIdAndDelete(formId);
+
+    res.status(200).json({ message: "Form deleted successfully" });
   } catch (error) {
-    console.log("Error in fetching form");
-    return res.status(500).json({ message: "Error in fetching form" });
+    return res.status(500).json({ message: "Error in deleting form" });
   }
 };
 

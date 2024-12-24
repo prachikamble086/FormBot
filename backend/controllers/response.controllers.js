@@ -4,7 +4,6 @@ const Response = require("../models/response.model");
 const express = require("express");
 const app = express();
 
-//post and put wont have authentication
 const mongoose = require("mongoose");
 
 const postResponse = async (req, res) => {
@@ -12,7 +11,6 @@ const postResponse = async (req, res) => {
     const { formId } = req.params;
     const { completed, response, submittedAt, userId } = req.body;
 
-    // Check if formId is valid
     if (!mongoose.Types.ObjectId.isValid(formId)) {
       return res.status(400).json({ message: "Invalid form ID" });
     }
@@ -21,16 +19,14 @@ const postResponse = async (req, res) => {
       return res.status(400).json({ message: "User ID is required" });
     }
 
-    // Create a new response based on the provided data
     const newResponse = new Response({
       formId,
       userId,
       completed,
-      response, // Ensure the response is structured properly as an array of objects
+      response,
       submittedAt,
     });
 
-    // Save the new response to the database
     await newResponse.save();
 
     return res.status(200).json({
@@ -38,7 +34,6 @@ const postResponse = async (req, res) => {
       newResponse,
     });
   } catch (error) {
-    console.log("Error occurred while creating response:", error);
     return res.status(500).json({ message: "Error while creating response" });
   }
 };
@@ -72,7 +67,6 @@ const putResponse = async (req, res) => {
       existingResponse,
     });
   } catch (error) {
-    console.log("Error while updating response:", error);
     return res.status(500).json({ message: "Error in updating response" });
   }
 };
@@ -119,7 +113,7 @@ const getResponseDetails = async (req, res) => {
     });
   } catch (error) {
     console.log("Error occured while fetching response");
-    res.status(500).json({ error });
+    res.status(400).json({ error });
   }
 };
 

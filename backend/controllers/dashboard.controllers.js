@@ -76,7 +76,6 @@ const postInvite = async (req, res) => {
     }
 
     if (dashboard.ownerId.toString() !== requestUserId) {
-      console.log("Not authorized to share this dashboard");
       return res.status(403).json({ message: "Access denied" });
     }
 

@@ -7,9 +7,13 @@ const {
   postForm,
   deleteForm,
 } = require("../controllers/form.controllers");
+const verifyToken = require("../middlewares/auth.middlewares");
+
+router.get("/:formId", getFormDetails);
+
+router.use(verifyToken);
 
 router.post("/:dashboardId", postForm);
-router.get("/:formId", getFormDetails);
 router.delete("/:formId", deleteForm);
 
 module.exports = router;

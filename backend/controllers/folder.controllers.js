@@ -21,8 +21,9 @@ const getFolderDetails = async (req, res) => {
       path: "forms",
       select: "_id title",
     });
+
     if (!folder) {
-      res.status(400).json({ message: "Folder not found" });
+      return res.status(400).json({ message: "Folder not found" });
     }
 
     const currentDashboard = await Dashboard.findById(folder.dashboardId);
@@ -41,7 +42,7 @@ const getFolderDetails = async (req, res) => {
       forms: folder.forms,
     });
   } catch (error) {
-    console.log("Error occured while fetching folder");
+    console.log("Error occurred while fetching folder:", error);
     res.status(500).json({ error });
   }
 };
@@ -83,7 +84,9 @@ const postFolder = async (req, res) => {
     });
 
     await folderPost.save();
-    console.log("Folder created successfully");
+
+    dashboard.folders.push(folderPost._id);
+    await dashboard.save();
 
     res.status(200).json({
       message: "Folder created successfully",
@@ -91,7 +94,6 @@ const postFolder = async (req, res) => {
       title: folderPost.title,
     });
   } catch (error) {
-    console.log("Error occurred while creating folder:", error);
     res.status(500).json({ message: "Error occurred while creating folder" });
   }
 };

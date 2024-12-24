@@ -23,7 +23,7 @@ const getUserDetails = async (req, res) => {
     return res.status(200).json({ user });
   } catch (error) {
     console.log("Error occured while fetching user");
-    return res.status(500).json({ error });
+    return res.status(400).json({ error });
   }
 };
 
@@ -37,7 +37,7 @@ const putUserDetails = async (req, res) => {
     userId = userId.trim();
 
     if (userId !== requestUserId) {
-      return res.status(400).json({ mesage: "Acceess denied" });
+      return res.status(400).json({ mesage: "Access denied" });
     }
     const user = User.findById(userId);
     if (!user) {
@@ -51,7 +51,7 @@ const putUserDetails = async (req, res) => {
   } catch (error) {
     console.log("Error occured while fectcing user");
     return res
-      .status(500)
+      .status(400)
       .json({ message: "Error occured while fectcing user" });
   }
 };
