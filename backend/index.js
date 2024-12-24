@@ -24,12 +24,12 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", authRoute);
+app.use("/form", formRoute);
+app.use("/response", responseRoute);
 app.use(verifyToken);
 app.use("/user", userRoute);
 app.use("/dashboard", dashboardRoute);
 app.use("/folder", folderRoute);
-app.use("/form", formRoute);
-app.use("/response", responseRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

@@ -34,6 +34,7 @@ const signup = async (req, res) => {
       ownerId: newUser._id,
       title: newUser.userName + " Workspace",
       editAccess: [newUser._id],
+      viewAccess: [newUser._id],
       editLinkId: uuidv4(),
     });
 
