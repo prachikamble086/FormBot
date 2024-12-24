@@ -55,12 +55,11 @@ const getDashboardDetails = async (req, res) => {
 const postInvite = async (req, res) => {
   try {
     let { dashboardId } = req.params;
-    let { requestUserId, email, permission } = req.body;
+    let { requestUserId, emailId } = req.body;
 
-    console.log("dashboardId:", dashboardId);
-    console.log("requestUserId:", requestUserId);
-    console.log("email:", email);
-    console.log("permission:", permission);
+    if (!emailId) {
+      return res.status(400).json({ message: "emailId is required" });
+    }
 
     dashboardId = dashboardId.trim();
 
@@ -81,17 +80,19 @@ const postInvite = async (req, res) => {
       return res.status(403).json({ message: "Access denied" });
     }
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ emailId });
+    console.log("User found:", user);
+
     if (!user) {
       console.log("User not registered for email");
       return res.status(404).json({ message: "User not registered" });
     }
 
     res.status(200).json({
-      message: `Access granted`,
+      message: "Access granted",
     });
   } catch (error) {
-    console.log("Error occurred while sharing the dashboard");
+    console.log("Error occurred while sharing the dashboard", error);
     res
       .status(500)
       .json({ message: "Error occurred while sharing the dashboard" });

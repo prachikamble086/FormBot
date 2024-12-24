@@ -53,10 +53,6 @@ const postFolder = async (req, res) => {
     let { dashboardId } = req.params;
     let { requestUserId, title, forms } = req.body;
 
-    console.log("Received dashboardId:", dashboardId);
-    console.log("Received requestUserId:", requestUserId);
-    console.log("Received title:", title);
-
     dashboardId = dashboardId.trim();
 
     if (!mongoose.Types.ObjectId.isValid(dashboardId)) {
@@ -67,7 +63,6 @@ const postFolder = async (req, res) => {
     }
 
     const dashboard = await Dashboard.findById(dashboardId);
-    console.log(dashboard.editAccess);
 
     if (!dashboard) {
       console.log("Dashboard not found");
@@ -79,8 +74,6 @@ const postFolder = async (req, res) => {
       console.log("User does not have edit access:", requestUserId);
       return res.status(500).json({ message: "Access denied" });
     }
-
-    console.log("User has edit access");
 
     const folderPost = new Folder({
       title,
