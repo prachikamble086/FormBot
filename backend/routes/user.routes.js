@@ -8,6 +8,6 @@ const {
 } = require("../controllers/user.controllers");
 
 router.get("/:userId", getUserDetails);
-router.put("/:userId,putUserDetails");
+router.put("/:userId", putUserDetails);
 
 module.exports = router;

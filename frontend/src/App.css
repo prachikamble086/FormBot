@@ -10,7 +10,11 @@ html[data-theme="dark"] {
   --text-color: white;
 }
 
-/* Apply background color to body */
+/* Apply background color to body  
+Apply background color to body  
+Apply background color to body  
+*/
+
 body {
   background-color: var(--background-color);
   color: var(--text-color);

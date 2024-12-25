@@ -4,6 +4,8 @@ dotenv.config();
 const express = require("express");
 const app = express();
 const PORT = 8000;
+const cors = require("cors");
+app.use(express.json()); // Add this line
 
 const { connectDB } = require("./models/db");
 
@@ -18,6 +20,8 @@ const responseRoute = require("./routes/response.routes");
 app.use(express.json());
 
 connectDB();
+
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("Backend server is running!");

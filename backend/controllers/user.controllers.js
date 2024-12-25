@@ -39,15 +39,21 @@ const putUserDetails = async (req, res) => {
     if (userId !== requestUserId) {
       return res.status(400).json({ mesage: "Access denied" });
     }
+
     const user = User.findById(userId);
     if (!user) {
       return res.status(400).json({ mesage: "Acceess denied" });
     }
+
     user.userName = userName;
     user.emailId = emailId;
     user.password = password;
+
     await user.save();
-    res.status(200).json({ message: "User profile updated successfully" });
+
+    return res
+      .status(200)
+      .json({ message: "User profile updated successfully", user });
   } catch (error) {
     console.log("Error occured while fectcing user");
     return res
