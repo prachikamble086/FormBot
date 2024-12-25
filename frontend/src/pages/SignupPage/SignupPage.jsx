@@ -50,7 +50,8 @@ const SignupPage = () => {
         setUser(postRegisterRequestData.user);
         localStorage.setItem("jwtToken", postRegisterRequestData.jwt);
         console.log("Navigating to dashboard");
-        navigate("/dashboard");
+
+        navigate("/dashboard"); //sdfghjkl;lkjhgfdfghjkl;lkjhgffghjkl;
       } else {
         setError("Registration failed. Please try again");
       }
