@@ -5,15 +5,15 @@ const Context = createContext();
 export const ContextProvider = ({ children }) => {
   const [theme, setTheme] = useState("light");
   const [user, setUser] = useState(null);
-  const [homePageData, setHomePageData] = useState(null);
+  const [folder, setFolder] = useState(null);
 
   const data = {
     theme,
     setTheme,
     user,
     setUser,
-    homePageData,
-    setHomePageData,
+    folder,
+    setFolder,
   };
 
   return <Context.Provider value={data}>{children}</Context.Provider>;

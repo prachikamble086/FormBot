@@ -47,7 +47,9 @@ const signup = async (req, res) => {
       expiresIn: "2h",
     });
 
-    return res.status(200).json({ token, message: "User created" });
+    return res
+      .status(200)
+      .json({ token, message: "User created", user: newUser });
   } catch (error) {
     console.log("Signup error", error);
     res.status(400).json({ message: "Internal server error" });
@@ -77,7 +79,17 @@ const login = async (req, res) => {
     const token = jwt.sign({ userId: existingUser._id }, process.env.SECRET, {
       expiresIn: "2h",
     });
-    return res.status(200).json({ token, message: "Login successfull" });
+
+    const dashboardId = existingUser.editAccess[0];
+
+    return res
+      .status(200)
+      .json({
+        token,
+        message: "Login successfull",
+        user: existingUser,
+        dashboardId,
+      });
   } catch (error) {
     return res.status(400).json({ message: "Internal server error" });
   }

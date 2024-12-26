@@ -56,7 +56,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<SignInPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/dashboard/:dashboardId" element={<DashboardPage />} />
       </Routes>
     </>
   );

@@ -87,7 +87,7 @@ const postInvite = async (req, res) => {
       return res.status(404).json({ message: "User not registered" });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "Access granted",
     });
   } catch (error) {

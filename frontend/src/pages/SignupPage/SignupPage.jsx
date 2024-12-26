@@ -13,6 +13,7 @@ import ThemeToggleLoginSignUp from "../../../components/themesSignUpLogin/themes
 import { Link, useNavigate } from "react-router-dom";
 import { postRegisterRequest } from "../../services/networkCalls";
 import { useAppContext } from "../../../context/context";
+
 const SignupPage = () => {
   const [username, setUsername] = useState("");
   const [emailId, setEmailId] = useState("");
@@ -42,16 +43,18 @@ const SignupPage = () => {
         password
       );
 
+      console.log(postRegisterRequestData);
+
       if (
         postRegisterRequestData &&
         postRegisterRequestData.user &&
-        postRegisterRequestData.jwt
+        postRegisterRequestData.token
       ) {
         setUser(postRegisterRequestData.user);
-        localStorage.setItem("jwtToken", postRegisterRequestData.jwt);
+        localStorage.setItem("jwtToken", postRegisterRequestData.token);
         console.log("Navigating to dashboard");
 
-        navigate("/dashboard"); //sdfghjkl;lkjhgfdfghjkl;lkjhgffghjkl;
+        navigate("/dashboard");
       } else {
         setError("Registration failed. Please try again");
       }
