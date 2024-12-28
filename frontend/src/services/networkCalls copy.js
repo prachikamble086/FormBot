@@ -39,6 +39,69 @@ export async function postLoginRequest(emailId, password) {
   }
 }
 
+// export async function putUserData(userId, userDetails) {
+//   try {
+//     const { data } = await axios.put(`${baseUrl}/user/${userId}`, userDetails);
+//     return data;
+//   } catch (error) {
+//     console.error(`Error updating user data for ID ${userId}:`, error);
+//     throw error;
+//   }
+// }
+
+export async function putUserData(
+  userId,
+  username,
+  emailId,
+  password,
+  requestUserId
+) {
+  try {
+    console.log("Sending update request to:", baseUrl);
+
+    // Prepare the request body with the data that might be updated
+    const updateData = {};
+
+    if (username) updateData.userName = username;
+    if (emailId) updateData.emailId = emailId;
+    if (password) updateData.password = password;
+
+    // Send the PUT request with the provided data
+    const { data } = await axios.put(`${baseUrl}/users/${userId}`, {
+      requestUserId, // The logged-in user's ID for validation
+      ...updateData, // Only include the provided fields
+    });
+
+    return data;
+  } catch (error) {
+    console.error("Error during profile update:", error);
+    throw error;
+  }
+}
+
+// export async function postFolderRequest(
+//   dashboardId,
+//   requestUserId,
+//   title,
+//   forms
+// ) {
+//   try {
+//     console.log("Sending request to:", baseUrl);
+
+//     const { data } = await axios.post(`${baseUrl}/folders/${dashboardId}`, {
+//       requestUserId,
+//       title,
+//       forms,
+//     });
+//     return data;
+//   } catch (error) {
+//     console.error("Error during login:", error);
+//     throw error;
+//   }
+// }
+
+// Define baseUrl somewhere, or ensure it's defined before using it
+
 export async function postFolderRequest(
   dashboardId,
   requestUserId,
@@ -111,94 +174,6 @@ export async function getFormsRequest(folderId, requestUserId) {
     return data;
   } catch (error) {
     console.error("Error fetching forms:", error);
-    throw error;
-  }
-}
-
-//user1update@sample.com
-//0987654321
-
-// export async function putUserData(userId, username, emailId, password) {
-//   try {
-//     const { data } = await axios.put(`${baseUrl}/user/${userId}`, {
-//       username,
-//       emailId,
-//       password,
-//     });
-//     return data;
-//   } catch (error) {
-//     console.error(`Error updating user data for ID ${userId}:`, error);
-//     throw error;
-//   }
-// }
-
-// export async function putUserData(
-//   userId,
-//   username,
-//   emailId,
-//   password,
-//   newPassword
-// ) {
-//   try {
-//     const { data } = await axios.put(`${baseUrl}/user/${userId}`, {
-//       username,
-//       emailId,
-//       password,
-//       newPassword,
-//     });
-//     return data;
-//   } catch (error) {
-//     console.error(`Error updating user data for ID ${userId}:`, error);
-//     throw error;
-//   }
-// }
-
-export async function putUserData(
-  userId,
-  username,
-  emailId,
-  password,
-  newPassword
-) {
-  try {
-    const requestUserId = localStorage.getItem("userId");
-    if (!requestUserId) {
-      throw new Error("User ID not found in localStorage");
-    }
-
-    const dataToUpdate = {
-      requestUserId,
-      userName: username,
-      emailId,
-      password,
-      newPassword,
-    };
-
-    console.log("Data to send in PUT request:", dataToUpdate); // Log the data being sent
-
-    const { data } = await axios.put(`${baseUrl}/user/${userId}`, dataToUpdate);
-
-    console.log("Response data:", data); // Log the response from the backend
-
-    return data;
-  } catch (error) {
-    console.error(
-      `Error updating user data for ID ${userId}:`,
-      error.response || error.message
-    );
-    throw error;
-  }
-}
-
-export async function postFormRequest(dashboardId, requestUserId, title) {
-  try {
-    const { data } = await axios.post(`${baseUrl}/form/${dashboardId}`, {
-      requestUserId,
-      title,
-    });
-    return data;
-  } catch (error) {
-    console.error("Error creating form:", error);
     throw error;
   }
 }

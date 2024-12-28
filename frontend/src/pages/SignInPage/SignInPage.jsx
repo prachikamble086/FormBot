@@ -1,30 +1,29 @@
 import React, { useState } from "react";
 import InputSignupAndSignIn from "../../../components/InputSignupAndSignIn/InputSignupAndSignIn";
-import SignupLoginButton from "../../../components/SignupLoginButton/SignupLoginButton";
 import "./SignInPage.css";
 import {
   arrow_back,
   Google,
   Semicircle1,
-  Semicirle2,
   triangleLoginSignUp,
 } from "../../../constant";
 import ThemeToggleLoginSignUp from "../../../components/themesSignUpLogin/themesSignUpLogin";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../../context/context";
 import { postLoginRequest } from "../../services/networkCalls";
+
 const SignInPage = () => {
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-
   const { setUser } = useAppContext();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    // Check if fields are empty
     if (!emailId || !password) {
       setError("All fields required");
       return;
@@ -35,18 +34,23 @@ const SignInPage = () => {
 
       if (postLoginData && postLoginData.user && postLoginData.token) {
         setUser(postLoginData.user);
+
         localStorage.setItem("jwtToken", postLoginData.token);
-        localStorage.setItem("userId", postLoginData.user._id);
 
-        const dashboardId = postLoginData.dashboardId;
-        localStorage.setItem("dashboardId", dashboardId);
+        const dashboardId =
+          postLoginData.user.editAccess && postLoginData.user.editAccess[0];
 
-        navigate(`/dashboard/${dashboardId}`);
+        if (dashboardId) {
+          localStorage.setItem("dashboardId", dashboardId);
+          navigate(`/dashboard/${dashboardId}`);
+        } else {
+          setError("Dashboard not found.");
+        }
       } else {
         setError("Invalid credentials or server error.");
       }
     } catch (error) {
-      console.log(error);
+      console.log("Login error:", error);
       setError("Something went wrong. Please try again");
     }
   };
@@ -71,13 +75,14 @@ const SignInPage = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
 
+          {error && <div className="error">{error}</div>}
+
           <div className="signup-or-login">
             <button className="signup-login-button" type="submit">
               Login
             </button>
             <div>OR</div>
             <button className="signup-login-button">
-              {" "}
               <img src={Google} alt="" />
               Sign Up with Google
             </button>
@@ -90,8 +95,6 @@ const SignInPage = () => {
           </div>
         </div>
         <img src={triangleLoginSignUp} alt="" className="triangleLoginSignUp" />
-
-        <img src={Semicirle2} alt="" className="Semicirle2" />
 
         <img src={Semicircle1} alt="" className="Semicircle1" />
       </form>

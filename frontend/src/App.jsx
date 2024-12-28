@@ -9,6 +9,7 @@ import { useAppContext } from "../context/context";
 import { setupAuthHeaderForServiceCalls } from "./services/authTokenMiddleware";
 import { getUserData } from "./services/networkCalls";
 import { setupAuthExceptionHandler } from "./services/authExecptionMMiddleware";
+import SettingPage from "./pages/SettingPage/SettingPage";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -57,6 +58,7 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<SignInPage />} />
         <Route path="/dashboard/:dashboardId" element={<DashboardPage />} />
+        <Route path="/user/:userId" element={<SettingPage />} />
       </Routes>
     </>
   );

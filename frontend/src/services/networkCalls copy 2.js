@@ -1,10 +1,24 @@
 import axios from "axios";
 
 const baseUrl = import.meta.env.VITE_API_ENDPOINT;
-
 export async function getUserData(userId) {
   try {
-    const { data } = await axios.get(`${baseUrl}/user/${userId}`);
+    // Get the logged-in user's ID from localStorage (or JWT token if necessary)
+    const requestUserId = localStorage.getItem("userId");
+
+    // Check if requestUserId is available
+    if (!requestUserId) {
+      throw new Error("User ID not found in localStorage");
+    }
+
+    // Send GET request with userId in URL and requestUserId in the body
+    const { data } = await axios.get(`${baseUrl}/user/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`, // Optional: Add Authorization header if needed
+      },
+      data: { requestUserId }, // Pass requestUserId in the request body
+    });
+
     return data;
   } catch (error) {
     console.error(`Error fetching user data for ID ${userId}:`, error);
@@ -118,74 +132,16 @@ export async function getFormsRequest(folderId, requestUserId) {
 //user1update@sample.com
 //0987654321
 
-// export async function putUserData(userId, username, emailId, password) {
-//   try {
-//     const { data } = await axios.put(`${baseUrl}/user/${userId}`, {
-//       username,
-//       emailId,
-//       password,
-//     });
-//     return data;
-//   } catch (error) {
-//     console.error(`Error updating user data for ID ${userId}:`, error);
-//     throw error;
-//   }
-// }
-
-// export async function putUserData(
-//   userId,
-//   username,
-//   emailId,
-//   password,
-//   newPassword
-// ) {
-//   try {
-//     const { data } = await axios.put(`${baseUrl}/user/${userId}`, {
-//       username,
-//       emailId,
-//       password,
-//       newPassword,
-//     });
-//     return data;
-//   } catch (error) {
-//     console.error(`Error updating user data for ID ${userId}:`, error);
-//     throw error;
-//   }
-// }
-
-export async function putUserData(
-  userId,
-  username,
-  emailId,
-  password,
-  newPassword
-) {
+export async function putUserData(userId, username, emailId, password) {
   try {
-    const requestUserId = localStorage.getItem("userId");
-    if (!requestUserId) {
-      throw new Error("User ID not found in localStorage");
-    }
-
-    const dataToUpdate = {
-      requestUserId,
-      userName: username,
+    const { data } = await axios.put(`${baseUrl}/user/${userId}`, {
+      username,
       emailId,
       password,
-      newPassword,
-    };
-
-    console.log("Data to send in PUT request:", dataToUpdate); // Log the data being sent
-
-    const { data } = await axios.put(`${baseUrl}/user/${userId}`, dataToUpdate);
-
-    console.log("Response data:", data); // Log the response from the backend
-
+    });
     return data;
   } catch (error) {
-    console.error(
-      `Error updating user data for ID ${userId}:`,
-      error.response || error.message
-    );
+    console.error(`Error updating user data for ID ${userId}:`, error);
     throw error;
   }
 }
@@ -202,3 +158,5 @@ export async function postFormRequest(dashboardId, requestUserId, title) {
     throw error;
   }
 }
+
+////////////////

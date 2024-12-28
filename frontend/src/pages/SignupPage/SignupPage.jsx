@@ -31,7 +31,7 @@ const SignupPage = () => {
       alert("All fields required");
       return;
     }
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
       setError("Password does not match ");
       return;
     }
@@ -52,11 +52,18 @@ const SignupPage = () => {
       ) {
         setUser(postRegisterRequestData.user);
         localStorage.setItem("jwtToken", postRegisterRequestData.token);
+        localStorage.setItem("userId", postRegisterRequestData.user._id); // Save userId in localStorage
         console.log("Navigating to dashboard");
 
-        navigate("/dashboard");
-      } else {
-        setError("Registration failed. Please try again");
+        const dashboardId =
+          postRegisterRequestData.user.editAccess &&
+          postRegisterRequestData.user.editAccess[0];
+        if (dashboardId) {
+          console.log("Navigating to dashboard:", `/dashboard/${dashboardId}`);
+          navigate(`/dashboard/${dashboardId}`);
+        } else {
+          setError("Dashboard not found.");
+        }
       }
     } catch (error) {
       console.log("Registration error", error);

@@ -34,6 +34,15 @@ const Semicirle2 =
 const Google =
   "https://res.cloudinary.com/drkzizaiv/image/upload/v1734780706/Google_qonuri.png";
 
+const user =
+  "https://res.cloudinary.com/drkzizaiv/image/upload/v1735282679/Frame_1036_pg2rk6.png";
+
+const view =
+  "https://res.cloudinary.com/drkzizaiv/image/upload/v1735282679/view_slu1mo.png";
+
+const lock =
+  "https://res.cloudinary.com/drkzizaiv/image/upload/v1735282679/lock_xw7bx5.png";
+
 export {
   logo,
   figure,
@@ -47,4 +56,7 @@ export {
   Semicirle2,
   triangleLoginSignUp,
   Google,
+  user,
+  view,
+  lock,
 };
